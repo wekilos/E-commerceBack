@@ -18,6 +18,8 @@ const ECarouselControllers = require("../controller/ecarouselController");
 const FoodBannerControllers = require("../controller/foodBannerController");
 const FoodCarouselControllers = require("../controller/foodCarouselController");
 
+const CategoryControllers = require("../controller/ITIDAController");
+
 // For Token
 
 const verifyToken = async (req, res, next) => {
@@ -155,5 +157,46 @@ router.get(
 router.post("/f-carousel/create", FoodCarouselControllers.create);
 router.patch("/f-carousel/update", FoodCarouselControllers.update);
 router.delete("/f-carousel/destroy/:id", FoodCarouselControllers.Destroy);
+
+router.get("/grocery_categories", CategoryControllers.getAllCategories);
+router.get("/grocery_brands", CategoryControllers.getAllBrands);
+router.get("/grocery_markets", CategoryControllers.getAllMarkets);
+router.get(
+  "/grocery_discount_products",
+  CategoryControllers.getAllDiscountProducts
+);
+router.get(
+  "/grocery_more_sale_products",
+  CategoryControllers.getAllMoreSaleProducts
+);
+router.get(
+  "/grocery_category_products",
+  CategoryControllers.getAllCategoryProducts
+);
+router.get(
+  "/grocery_subcategory_products",
+  CategoryControllers.getAllSubCategoryProducts
+);
+router.get("/grocery_same_products", CategoryControllers.getAllSameProducts);
+router.get("/grocery_brand_products", CategoryControllers.getAllBarndProducts);
+router.get(
+  "/grocery_search_products",
+  CategoryControllers.getAllSearchProducts
+);
+router.get("/grocery_product", CategoryControllers.getProduct);
+router.get("/grocery_market", CategoryControllers.getMarket);
+router.post("/grocery_order", CategoryControllers.createOrder);
+router.post("/grocery_rejected_order", CategoryControllers.rejectOrder);
+router.get("/grocery_orders", CategoryControllers.getAllOrders);
+router.get("/grocery_order", CategoryControllers.getOrder);
+router.post("/grocery_give_rating", CategoryControllers.createRating);
+router.post("/grocery_favourite_product", CategoryControllers.addToFavProduct);
+router.post("/grocery_favourite_market", CategoryControllers.addToFavMarket);
+router.get("/grocery_favourite_products", CategoryControllers.getFavProducts);
+router.get("/grocery_favourite_markets", CategoryControllers.getFavMarkets);
+router.post(
+  "/grocery_change_order_status",
+  CategoryControllers.changeOrderStatus
+);
 
 module.exports = router;
