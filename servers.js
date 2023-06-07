@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const fileupload = require("express-fileupload");
 const PORT = process.env.PORT || 8181;
+const helmet = require("helmet");
 // const https = require('https');
 const http = require("http");
 
@@ -27,6 +28,11 @@ app.use("/", limiter);
 app.use(
   cors({
     origin: "*",
+  })
+);
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
   })
 );
 // app.use(upload.single("surat"));
