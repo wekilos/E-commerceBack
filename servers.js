@@ -26,7 +26,7 @@ const limiter = require("express-rate-limit")({
 app.use("/", limiter);
 app.use(
   cors({
-    "Cross-Origin-Resource-Policy": "cross-origin",
+    origin: "*",
   })
 );
 // app.use(upload.single("surat"));
