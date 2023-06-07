@@ -1,10 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const multer = require("multer");
-const upload = multer();
 const fileupload = require("express-fileupload");
-
+const PORT = process.env.PORT || 8181;
+const helmet = require("helmet");
 // const https = require('https');
 const http = require("http");
 
@@ -13,32 +12,37 @@ const fs = require("fs");
 const app = express();
 
 app.use(fileupload());
+app.use(require("helmet")());
 app.use("/uploads", express.static("uploads"));
 app.use("/itda", express.static("C:/q/"));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+const limiter = require("express-rate-limit")({
+  message: "Too many requests from this IP, please try again in an hour",
+  windowMs: 1 * 60 * 1000, // 1 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 1 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+// app.use("/", limiter);
+
+app.use(cors({ origin: "*" }));
+// app.use(
+//   helmet({
+//     crossOriginResourcePolicy: false,
+//   })
+// );
+
 // app.use(upload.single("surat"));
 app.use((req, res, next) => {
-  // const allowedOrigins = ["http://localhost:3000"];
-  // const origin = req.headers.origin;
-  // if (allowedOrigins.includes(origin)) {
-  //   res.setHeader("Access-Control-Allow-Origin", origin);
-  // }
   res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Cross-Origin-Resource-Policy", "*");
 
-  res.setHeader("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+  res.setHeader("Allow", "GET, POST, OPTIONS,PUTCH, PUT, DELETE");
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
   );
-  //  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  // res.header('Access-Control-Allow-Credentials', true);
-  //  res.header('Access-Control-Allow-Credentials', true);
   next();
 });
 
@@ -70,8 +74,8 @@ var httpServer = http.createServer(app, (req, res) => {
 // htpps uchin son achmaly
 // var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(8181, () => {
-  console.log("working http server on 8181 port");
+httpServer.listen(PORT, () => {
+  console.log(`working http server on ${PORT} port`);
 });
 
 // son achmaly
@@ -79,7 +83,6 @@ httpServer.listen(8181, () => {
 //   console.log("working https server on 4443 port")
 // });
 
-// const PORT = process.env.PORT || 8080;
 //  app.listen(PORT, () => console.log("listening on *:",PORT));
 
 global.rootPath = __dirname;
