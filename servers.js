@@ -25,11 +25,7 @@ const limiter = require("express-rate-limit")({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 app.use("/", limiter);
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors());
 // app.use(
 //   helmet({
 //     crossOriginResourcePolicy: false,
