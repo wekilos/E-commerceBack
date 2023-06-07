@@ -33,7 +33,10 @@ app.use("/", limiter);
 //   })
 // );
 
-const allowedOrigins = ["http://localhost:3333", "http://119.235.118.211:3333"];
+const allowedOrigins = [
+  "http://localhost:3333/",
+  "http://119.235.118.211:3333/",
+];
 app.use(
   cors({
     origin: function (origin, callback) {
