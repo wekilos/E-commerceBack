@@ -110,10 +110,11 @@ const create = async (req, res) => {
             });
           }
         );
+        // res.status(201).json(data);
       })
       .catch((err) => {
         console.log(err);
-        res.json("create employee:", err);
+        res.json("create user:", err);
       });
   }
 };

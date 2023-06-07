@@ -50,17 +50,17 @@ router.get("/user/all", cache.get, UserControllers.getAll, cache.set);
 router.get("/user/:id", cache.get, UserControllers.getOne, cache.set);
 router.post("/user/create", UserControllers.create);
 router.post("/user/login", UserControllers.login);
-router.patch("/user/update", verifyToken, UserControllers.update);
+router.patch("/user/update", UserControllers.update);
 router.patch("/user/disActive/:id", UserControllers.disActive);
 router.patch("/user/active/:id", UserControllers.Active);
-router.patch("/user/delete/:id", verifyToken, UserControllers.Delete);
+router.patch("/user/delete/:id", UserControllers.Delete);
 router.delete("/user/destroy/:id", UserControllers.Destroy);
 
 // User Address Routes
 router.get(
   "/address/all",
-  verifyToken,
-  cache.get,
+  // verifyToken,
+  // cache.get,
   UserAddressControllers.getAll,
   cache.set
 );
@@ -71,8 +71,8 @@ router.get(
   UserAddressControllers.getOne,
   cache.set
 );
-router.post("/address/create", verifyToken, UserAddressControllers.create);
-router.patch("/address/update", verifyToken, UserAddressControllers.update);
+router.post("/address/create", UserAddressControllers.create);
+router.patch("/address/update", UserAddressControllers.update);
 router.delete(
   "/address/destroy/:id",
   verifyToken,
@@ -158,6 +158,7 @@ router.post("/f-carousel/create", FoodCarouselControllers.create);
 router.patch("/f-carousel/update", FoodCarouselControllers.update);
 router.delete("/f-carousel/destroy/:id", FoodCarouselControllers.Destroy);
 
+// ors
 router.get("/grocery_categories", CategoryControllers.getAllCategories);
 router.get("/grocery_brands", CategoryControllers.getAllBrands);
 router.get("/grocery_markets", CategoryControllers.getAllMarkets);

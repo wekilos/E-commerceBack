@@ -13,6 +13,7 @@ const app = express();
 app.use(fileupload());
 app.use(require("helmet")());
 app.use("/uploads", express.static("uploads"));
+app.use("/itda", express.static("C:/q/"));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 const limiter = require("express-rate-limit")({

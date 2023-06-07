@@ -69,11 +69,12 @@ const getOne = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { title, address } = req.body;
+  const { title, address, UserId } = req.body;
 
   UserAddress.create({
     title,
     address,
+    UserId,
   })
     .then(async (data) => {
       res.json(data);
