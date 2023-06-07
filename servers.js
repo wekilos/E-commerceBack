@@ -28,6 +28,7 @@ app.use(
   cors({
     origin: "*",
     "cross-origin": "*",
+    "same-site": "*",
   })
 );
 // app.use(upload.single("surat"));
