@@ -27,6 +27,7 @@ app.use("/", limiter);
 app.use(
   cors({
     origin: "*",
+    "cross-origin": "*",
   })
 );
 // app.use(upload.single("surat"));
