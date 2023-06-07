@@ -25,16 +25,33 @@ const limiter = require("express-rate-limit")({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 app.use("/", limiter);
-app.use(cors({ origin: "*" }));
+
+// app.use(cors({ origin: "*" }));
 // app.use(
 //   helmet({
 //     crossOriginResourcePolicy: false,
 //   })
 // );
+
+const allowedOrigins = ["http://localhost:3333", "http://119.235.118.211:3333"];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
 // app.use(upload.single("surat"));
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Cross-Origin-Resource-Policy", "*");
+  // res.setHeader("Cross-Origin-Resource-Policy", "*");
 
   res.setHeader("Allow", "GET, POST, OPTIONS,PUTCH, PUT, DELETE");
   res.setHeader(
