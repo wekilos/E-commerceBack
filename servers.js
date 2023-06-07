@@ -30,11 +30,11 @@ app.use(
     origin: "*",
   })
 );
-app.use(
-  helmet({
-    crossOriginResourcePolicy: false,
-  })
-);
+// app.use(
+//   helmet({
+//     crossOriginResourcePolicy: false,
+//   })
+// );
 // app.use(upload.single("surat"));
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
