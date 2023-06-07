@@ -33,8 +33,8 @@ app.use("/", limiter);
 // );
 // app.use(upload.single("surat"));
 app.use((req, res, next) => {
-  // res.setHeader("Access-Control-Allow-Origin", "*");
-  // res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Cross-Origin-Resource-Policy", "*");
 
   res.setHeader("Allow", "GET, POST, OPTIONS,PUTCH, PUT, DELETE");
   res.setHeader(
