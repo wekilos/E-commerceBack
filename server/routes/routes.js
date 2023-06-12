@@ -55,6 +55,7 @@ router.patch("/user/disActive/:id", UserControllers.disActive);
 router.patch("/user/active/:id", UserControllers.Active);
 router.patch("/user/delete/:id", UserControllers.Delete);
 router.delete("/user/destroy/:id", UserControllers.Destroy);
+router.post("/user/check", UserControllers.checkCode);
 
 // User Address Routes
 router.get(
@@ -82,8 +83,8 @@ router.delete(
 // FeedBack Routes
 router.get("/feedBack/all", cache.get, FeedBackControllers.getAll, cache.set);
 router.get("/feedBack/:id", cache.get, FeedBackControllers.getOne, cache.set);
-router.post("/feedBack/create", verifyToken, FeedBackControllers.create);
-router.patch("/feedBack/update", verifyToken, FeedBackControllers.update);
+router.post("/feedBack/create", FeedBackControllers.create);
+router.patch("/feedBack/update", FeedBackControllers.update);
 router.delete("/feedBack/destroy/:id", FeedBackControllers.Destroy);
 
 // Config Routes

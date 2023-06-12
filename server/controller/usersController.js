@@ -1,5 +1,5 @@
 var Sequelize = require("sequelize");
-const { User, UserAddress } = require("../../models");
+const { User, UserAddress, UserVerification } = require("../../models");
 var sequelize = require("../../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -7,10 +7,15 @@ const Func = require("../functions/functions");
 const Op = Sequelize.Op;
 const fs = require("fs");
 
-const getAll = async (req, res) => {
-  const { active, name } = req.query;
+const axios = require("axios");
 
-  const Active = active ? { active: active } : null;
+const BASE_URL = "http://119.235.118.211:6415";
+
+const getAll = async (req, res) => {
+  const { active, deleted, name } = req.query;
+
+  const Active = active ? { active: active } : { active: true };
+  const Deleted = deleted ? { deleted: deleted } : { deleted: false };
   const Username =
     name &&
     (name?.length > 0
@@ -29,7 +34,7 @@ const getAll = async (req, res) => {
     ],
 
     where: {
-      [Op.and]: [Active, Username],
+      [Op.and]: [Active, Deleted, Username],
     },
     order: [["id", "DESC"]],
   })
@@ -70,6 +75,7 @@ const getOne = async (req, res) => {
 
 const create = async (req, res) => {
   const { name, lastname, birthday, phone_number } = req.body;
+  const code = Math.floor(Math.random() * 90000) + 10000;
   const exist = await User.findOne({
     where: {
       phone_number: phone_number,
@@ -91,26 +97,32 @@ const create = async (req, res) => {
       deleted: false,
     })
       .then(async (data) => {
-        jwt.sign(
-          {
-            id: data.id,
-            name: data.name,
-            lastname: data.lastname,
-            phone_number: data.phone_number,
-          },
-          Func.Secret(),
-          (err, token) => {
-            res.status(200).json({
-              msg: "Suссessfully",
-              token: token,
-              id: data.id,
-              name: data.name,
-              lastname: data.lastname,
-              phone_number: data.phone_number,
-            });
-          }
-        );
-        // res.status(201).json(data);
+        await UserVerification.destroy({
+          where: { phone_number: phone_number },
+        });
+        UserVerification.create({
+          phone_number: phone_number,
+          code: code,
+          send: false,
+        })
+          .then(async (data) => {
+            await axios
+              .post(BASE_URL + "/send-code", {
+                code: "Sizin tassyklayysh codynyz: " + code,
+                phoneNumber: "+" + phone_number,
+              })
+              .then((data) => {
+                res.json("send code!");
+              })
+              .catch((err) => {
+                res.json(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.json("create verification err" + err);
+          });
+        res.json("sdds");
       })
       .catch((err) => {
         console.log(err);
@@ -122,6 +134,7 @@ const create = async (req, res) => {
 const login = async (req, res) => {
   const { phone_number } = req.body;
 
+  const code = Math.floor(Math.random() * 90000) + 10000;
   await User.findOne({
     where: { phone_number: phone_number },
   })
@@ -129,10 +142,36 @@ const login = async (req, res) => {
       if (!data.active) {
         res.json({ msg: "Siz DisActive edilen!" });
         return 0;
+      } else {
+        await UserVerification.destroy({
+          where: { phone_number: phone_number },
+        });
+        UserVerification.create({
+          phone_number: phone_number,
+          code: code,
+          send: false,
+        })
+          .then(async (data) => {
+            axios
+              .post(BASE_URL + "/send-code", {
+                code: "Sizin tassyklayysh codynyz: " + code,
+                phoneNumber: "+" + phone_number,
+              })
+              .then((data) => {
+                res.json("send code!");
+              })
+              .catch((err) => {
+                res.json("post err" + err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.json("create verification err" + err);
+          });
       }
     })
     .catch((err) => {
-      let text = "Hasaba alynmadyk employee!";
+      let text = "Hasaba alynmadyk Ulanyjy!";
       res.send({ login: false, msg: text, err: err });
     });
 };
@@ -200,6 +239,7 @@ const Active = async (req, res) => {
     User.update(
       {
         active: true,
+        deleted: false,
       },
       {
         where: {
@@ -265,6 +305,45 @@ const Destroy = async (req, res) => {
     res.json("Bu Id Boyuncha User yok!");
   }
 };
+
+const checkCode = async (req, res) => {
+  const { code, phone_number } = req.body;
+
+  const verification = await UserVerification.findOne({
+    where: { phone_number: phone_number },
+  });
+  if (!verification) {
+    res.json("PhoneNumber is wrong!");
+  } else {
+    if (verification.code != code) {
+      res.json("verification code is wrong!");
+    }
+    User.findOne({ where: { phone_number: phone_number } }).then((data) => {
+      if (!data) {
+        res.json("PhoneNumber is wrong!");
+      } else {
+        jwt.sign(
+          {
+            id: data.id,
+            name: data.name + " " + data.lastname,
+            phoneNumber: data.phone_number,
+          },
+          Func.Secret(),
+          (err, token) => {
+            res.status(200).json({
+              msg: "Suссessfully",
+              token: token,
+              id: data.id,
+              name: data.name + " " + data.lastname,
+              phoneNumber: data.phone_number,
+            });
+          }
+        );
+      }
+    });
+  }
+};
+
 exports.getAll = getAll;
 exports.getOne = getOne;
 exports.create = create;
@@ -274,3 +353,4 @@ exports.disActive = disActive;
 exports.Active = Active;
 exports.Delete = Delete;
 exports.Destroy = Destroy;
+exports.checkCode = checkCode;
