@@ -1,10 +1,11 @@
 var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 const { User, UserAddress } = require("../../models");
 var sequelize = require("../../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Func = require("../functions/functions");
-const Op = Sequelize.Op;
+
 const fs = require("fs");
 
 const getAll = async (req, res) => {

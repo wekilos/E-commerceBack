@@ -19,6 +19,7 @@ const FoodBannerControllers = require("../controller/foodBannerController");
 const FoodCarouselControllers = require("../controller/foodCarouselController");
 
 const CategoryControllers = require("../controller/ITIDAController");
+const CategoryControllers2 = require("../controller/ITIDAControllerResturans");
 
 // For Token
 
@@ -200,5 +201,38 @@ router.post(
   "/grocery_change_order_status",
   CategoryControllers.changeOrderStatus
 );
+
+// ors 2 resturants
+router.get("/food_categories", CategoryControllers2.getAllCategories);
+router.get(
+  "/food_restaurant_discount",
+  CategoryControllers2.getAllDiscountProducts
+);
+router.get(
+  "/food_restaurant_more_sale",
+  CategoryControllers2.getAllMoreSaleProducts
+);
+router.get(
+  "/food_restaurant_category",
+  CategoryControllers2.getAllCategoryProducts
+);
+
+router.get("/food_restaurant_meals", CategoryControllers2.getResturantMeals);
+router.get(
+  "/food_restaurant_meals_ids",
+  CategoryControllers2.getResturantMealsByIds
+);
+router.get("/food_restaurants_ids", CategoryControllers2.getResturantsByIds);
+router.get("/food_search_meal", CategoryControllers2.getAllSearchProducts);
+router.get("/food_restaurant", CategoryControllers2.getMarket);
+router.post("/food_order", CategoryControllers2.createOrder);
+router.post("/food_rejected_order", CategoryControllers2.rejectOrder);
+router.get("/food_orders", CategoryControllers2.getAllOrders);
+router.get("/food_order", CategoryControllers2.getOrder);
+router.post("/food_give_rating", CategoryControllers2.createRating);
+router.post("/food_favourite_meal", CategoryControllers2.addToFavProduct);
+router.post("/food_favourite_restaurant", CategoryControllers2.addToFavMarket);
+router.get("/food_favourite_meals", CategoryControllers2.getFavProducts);
+router.get("/food_favourite_restaurants", CategoryControllers2.getFavMarkets);
 
 module.exports = router;
