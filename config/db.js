@@ -6,9 +6,9 @@ const PASSWORD = process.env.PASSWORD || "samsyk1902";
 const HOST = process.env.HOST || "localhost";
 
 const sequelize = new Sequelize("arkadag", "postgres", "samsyk1902", {
-  host: "localhost",
-  port: "5432",
-  dialect: "postgres",
+	host: "localhost",
+	port: "5432",
+	dialect: "postgres",
 });
 
 module.exports = sequelize;

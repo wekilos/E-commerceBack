@@ -21,27 +21,29 @@ const FoodCarouselControllers = require("../controller/foodCarouselController");
 const CategoryControllers = require("../controller/ITIDAController");
 const CategoryControllers2 = require("../controller/ITIDAControllerResturans");
 
+const onlinePaymentController = require("../controller/onlinePaymentController");
+
 // For Token
 
 const verifyToken = async (req, res, next) => {
-  const bearerHeader =
-    req.headers["authorization"] || req.headers["Authorization"];
-  if (typeof bearerHeader !== "undefined") {
-    const bearer = bearerHeader.split(" ");
-    const bearerToken = bearer[1];
+	const bearerHeader =
+		req.headers["authorization"] || req.headers["Authorization"];
+	if (typeof bearerHeader !== "undefined") {
+		const bearer = bearerHeader.split(" ");
+		const bearerToken = bearer[1];
 
-    jwt.verify(bearerToken, Func.Secret(), (err, authData) => {
-      if (err) {
-        res.json("err");
-        console.log(err);
-      } else {
-        req.id = authData.id;
-      }
-    });
-    next();
-  } else {
-    res.send("<center><h2>This link was not found! :(</h2></center>");
-  }
+		jwt.verify(bearerToken, Func.Secret(), (err, authData) => {
+			if (err) {
+				res.json("err");
+				console.log(err);
+			} else {
+				req.id = authData.id;
+			}
+		});
+		next();
+	} else {
+		res.send("<center><h2>This link was not found! :(</h2></center>");
+	}
 };
 
 // // Routes
@@ -60,25 +62,25 @@ router.post("/user/check", UserControllers.checkCode);
 
 // User Address Routes
 router.get(
-  "/address/all",
-  // verifyToken,
-  // cache.get,
-  UserAddressControllers.getAll,
-  cache.set
+	"/address/all",
+	// verifyToken,
+	// cache.get,
+	UserAddressControllers.getAll,
+	cache.set
 );
 router.get(
-  "/address/:id",
-  verifyToken,
-  cache.get,
-  UserAddressControllers.getOne,
-  cache.set
+	"/address/:id",
+	verifyToken,
+	cache.get,
+	UserAddressControllers.getOne,
+	cache.set
 );
 router.post("/address/create", UserAddressControllers.create);
 router.patch("/address/update", UserAddressControllers.update);
 router.delete(
-  "/address/destroy/:id",
-  verifyToken,
-  UserAddressControllers.Destroy
+	"/address/destroy/:id",
+	verifyToken,
+	UserAddressControllers.Destroy
 );
 
 // FeedBack Routes
@@ -97,16 +99,16 @@ router.delete("/config/destroy/:id", ConfigControllers.Destroy);
 
 // E-banner-cards Routes
 router.get(
-  "/e-banner-card/all",
-  cache.get,
-  EBannerCardControllers.getAll,
-  cache.set
+	"/e-banner-card/all",
+	cache.get,
+	EBannerCardControllers.getAll,
+	cache.set
 );
 router.get(
-  "/e-banner-card/:id",
-  cache.get,
-  EBannerCardControllers.getOne,
-  cache.set
+	"/e-banner-card/:id",
+	cache.get,
+	EBannerCardControllers.getOne,
+	cache.set
 );
 router.post("/e-banner-card/create", EBannerCardControllers.create);
 router.patch("/e-banner-card/update", EBannerCardControllers.update);
@@ -121,16 +123,16 @@ router.delete("/e-banner/destroy/:id", EBannerControllers.Destroy);
 
 // E-Carousel Routes
 router.get(
-  "/e-carousel/all",
-  cache.get,
-  ECarouselControllers.getAll,
-  cache.set
+	"/e-carousel/all",
+	cache.get,
+	ECarouselControllers.getAll,
+	cache.set
 );
 router.get(
-  "/e-carousel/:id",
-  cache.get,
-  ECarouselControllers.getOne,
-  cache.set
+	"/e-carousel/:id",
+	cache.get,
+	ECarouselControllers.getOne,
+	cache.set
 );
 router.post("/e-carousel/create", ECarouselControllers.create);
 router.patch("/e-carousel/update", ECarouselControllers.update);
@@ -145,16 +147,16 @@ router.delete("/f-banner/destroy/:id", FoodBannerControllers.Destroy);
 
 // Food-carousel Routes
 router.get(
-  "/f-carousel/all",
-  cache.get,
-  FoodCarouselControllers.getAll,
-  cache.set
+	"/f-carousel/all",
+	cache.get,
+	FoodCarouselControllers.getAll,
+	cache.set
 );
 router.get(
-  "/f-carousel/:id",
-  cache.get,
-  FoodCarouselControllers.getOne,
-  cache.set
+	"/f-carousel/:id",
+	cache.get,
+	FoodCarouselControllers.getOne,
+	cache.set
 );
 router.post("/f-carousel/create", FoodCarouselControllers.create);
 router.patch("/f-carousel/update", FoodCarouselControllers.update);
@@ -165,26 +167,26 @@ router.get("/grocery_categories", CategoryControllers.getAllCategories);
 router.get("/grocery_brands", CategoryControllers.getAllBrands);
 router.get("/grocery_markets", CategoryControllers.getAllMarkets);
 router.get(
-  "/grocery_discount_products",
-  CategoryControllers.getAllDiscountProducts
+	"/grocery_discount_products",
+	CategoryControllers.getAllDiscountProducts
 );
 router.get(
-  "/grocery_more_sale_products",
-  CategoryControllers.getAllMoreSaleProducts
+	"/grocery_more_sale_products",
+	CategoryControllers.getAllMoreSaleProducts
 );
 router.get(
-  "/grocery_category_products",
-  CategoryControllers.getAllCategoryProducts
+	"/grocery_category_products",
+	CategoryControllers.getAllCategoryProducts
 );
 router.get(
-  "/grocery_subcategory_products",
-  CategoryControllers.getAllSubCategoryProducts
+	"/grocery_subcategory_products",
+	CategoryControllers.getAllSubCategoryProducts
 );
 router.get("/grocery_same_products", CategoryControllers.getAllSameProducts);
 router.get("/grocery_brand_products", CategoryControllers.getAllBarndProducts);
 router.get(
-  "/grocery_search_products",
-  CategoryControllers.getAllSearchProducts
+	"/grocery_search_products",
+	CategoryControllers.getAllSearchProducts
 );
 router.get("/grocery_product", CategoryControllers.getProduct);
 router.get("/grocery_market", CategoryControllers.getMarket);
@@ -198,29 +200,29 @@ router.post("/grocery_favourite_market", CategoryControllers.addToFavMarket);
 router.get("/grocery_favourite_products", CategoryControllers.getFavProducts);
 router.get("/grocery_favourite_markets", CategoryControllers.getFavMarkets);
 router.post(
-  "/grocery_change_order_status",
-  CategoryControllers.changeOrderStatus
+	"/grocery_change_order_status",
+	CategoryControllers.changeOrderStatus
 );
 
 // ors 2 resturants
 router.get("/food_categories", CategoryControllers2.getAllCategories);
 router.get(
-  "/food_restaurant_discount",
-  CategoryControllers2.getAllDiscountProducts
+	"/food_restaurant_discount",
+	CategoryControllers2.getAllDiscountProducts
 );
 router.get(
-  "/food_restaurant_more_sale",
-  CategoryControllers2.getAllMoreSaleProducts
+	"/food_restaurant_more_sale",
+	CategoryControllers2.getAllMoreSaleProducts
 );
 router.get(
-  "/food_restaurant_category",
-  CategoryControllers2.getAllCategoryProducts
+	"/food_restaurant_category",
+	CategoryControllers2.getAllCategoryProducts
 );
 
 router.get("/food_restaurant_meals", CategoryControllers2.getResturantMeals);
 router.get(
-  "/food_restaurant_meals_ids",
-  CategoryControllers2.getResturantMealsByIds
+	"/food_restaurant_meals_ids",
+	CategoryControllers2.getResturantMealsByIds
 );
 router.get("/food_restaurants_ids", CategoryControllers2.getResturantsByIds);
 router.get("/food_search_meal", CategoryControllers2.getAllSearchProducts);
@@ -234,5 +236,7 @@ router.post("/food_favourite_meal", CategoryControllers2.addToFavProduct);
 router.post("/food_favourite_restaurant", CategoryControllers2.addToFavMarket);
 router.get("/food_favourite_meals", CategoryControllers2.getFavProducts);
 router.get("/food_favourite_restaurants", CategoryControllers2.getFavMarkets);
+
+router.post("/online-payment", onlinePaymentController.getOnlinePayment);
 
 module.exports = router;
