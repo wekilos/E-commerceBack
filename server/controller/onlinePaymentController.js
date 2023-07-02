@@ -13,8 +13,8 @@ const getOnlinePayment = async (req, res) => {
 				amount: price * 100,
 				currency: "934",
 				language: "ru",
-				returnUrl: `http://ast.com.tm/checkout-result/?type=success&order_id=${order_id}`,
-				failUrl: `http://ast.com.tm/checkout-result/?type=cancel&order_id=${order_id}`,
+				returnUrl: `http://ast.com.tm/?type=success&order_id=${order_id}`,
+				failUrl: `http://ast.com.tm/?type=cancel&order_id=${order_id}`,
 				userName: 701411000036,
 				password: "E2hgRvgPdffhU83",
 				pageView: "Desktop",
@@ -31,8 +31,8 @@ const getOnlinePayment = async (req, res) => {
 		if (response.data.errorCode == 1) {
 			const new_order_id = Date.now().toString();
 			config.params.orderNumber = new_order_id;
-			config.params.returnUrl = `http://ast.com.tm/checkout-result/?type=success&order_id=${new_order_id}`;
-			config.params.failUrl = `http://ast.com.tm/checkout-result/?type=cancel&order_id=${new_order_id}`;
+			config.params.returnUrl = `http://ast.com.tm/?type=success&order_id=${new_order_id}`;
+			config.params.failUrl = `http://ast.com.tm/?type=cancel&order_id=${new_order_id}`;
 
 			response = await axios(config);
 			if (response.data.errorCode != 0) {
