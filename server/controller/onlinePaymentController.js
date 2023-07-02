@@ -1,5 +1,7 @@
 const axios = require("axios");
 
+const BASE_URL = "http://119.235.118.211:8080";
+
 const getOnlinePayment = async (req, res) => {
 	const { order_id, price } = req.body;
 
@@ -48,4 +50,21 @@ const getOnlinePayment = async (req, res) => {
 	}
 };
 
+const updateOnlinePaymentStatus = async (req, res) => {
+	const { order_id, is_paid } = req.body;
+	console.log(req.body);
+	try {
+		const response = await axios.post(BASE_URL + "/grocery_order_payment", {
+			order_id,
+			is_paid,
+		});
+		res.status(200).json(response.data);
+		console.log(response.data);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ message: err });
+	}
+};
+
 exports.getOnlinePayment = getOnlinePayment;
+exports.updateOnlinePaymentStatus = updateOnlinePaymentStatus;

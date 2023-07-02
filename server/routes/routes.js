@@ -238,5 +238,9 @@ router.get("/food_favourite_meals", CategoryControllers2.getFavProducts);
 router.get("/food_favourite_restaurants", CategoryControllers2.getFavMarkets);
 
 router.post("/online-payment", onlinePaymentController.getOnlinePayment);
+router.post(
+	"/grocery_order_payment",
+	onlinePaymentController.updateOnlinePaymentStatus
+);
 
 module.exports = router;
