@@ -237,6 +237,7 @@ router.post("/food_favourite_restaurant", CategoryControllers2.addToFavMarket);
 router.get("/food_favourite_meals", CategoryControllers2.getFavProducts);
 router.get("/food_favourite_restaurants", CategoryControllers2.getFavMarkets);
 
+// Online payment routes
 router.post("/online-payment", onlinePaymentController.getOnlinePayment);
 router.post(
 	"/grocery_order_payment",
