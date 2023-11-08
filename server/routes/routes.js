@@ -350,6 +350,7 @@ router.get(
   cache.set
 );
 
+// Online payment routes
 router.post("/online-payment", onlinePaymentController.getOnlinePayment);
 router.post(
   "/grocery_order_payment",
