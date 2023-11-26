@@ -344,6 +344,20 @@ const checkCode = async (req, res) => {
   }
 };
 
+const createUserFerification = (req, res) => {
+  const { phone_number, code } = req.body;
+  UserVerification.create({
+    phone_number: phone_number,
+    code: code,
+    send: false,
+  })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 exports.getAll = getAll;
 exports.getOne = getOne;
 exports.create = create;
@@ -354,3 +368,4 @@ exports.Active = Active;
 exports.Delete = Delete;
 exports.Destroy = Destroy;
 exports.checkCode = checkCode;
+exports.createUserFerification = createUserFerification;

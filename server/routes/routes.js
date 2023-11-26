@@ -60,6 +60,8 @@ router.patch("/user/delete/:id", UserControllers.Delete);
 router.delete("/user/destroy/:id", UserControllers.Destroy);
 router.post("/user/check", UserControllers.checkCode);
 
+router.post("/verification/create", UserControllers.createUserFerification);
+
 // User Address Routes
 router.get(
   "/address/all",
