@@ -61,6 +61,7 @@ router.delete("/user/destroy/:id", UserControllers.Destroy);
 router.post("/user/check", UserControllers.checkCode);
 
 router.post("/verification/create", UserControllers.createUserFerification);
+router.delete("/verification/delete", UserControllers.deleteUserFerification);
 
 // User Address Routes
 router.get(
