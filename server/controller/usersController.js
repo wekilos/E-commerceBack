@@ -312,24 +312,33 @@ const Destroy = async (req, res) => {
 const checkCode = async (req, res) => {
   const { code, phone_number } = req.body;
 
-  if (code == "12345" && phone_number == "99360123456") {
-    jwt.sign(
-      {
-        id: data.id,
-        name: "Apple",
-        phoneNumber: phone_number,
-      },
-      Func.Secret(),
-      (err, token) => {
-        res.status(200).json({
-          msg: "Suссessfully",
-          token: token,
-          id: 11,
-          name: "Apple",
-          phoneNumber: phone_number,
-        });
+  if (
+    code == "12345" &&
+    (phone_number == "99360123456" || phone_number == "+99360123456")
+  ) {
+    User.findOne({ where: { phone_number: phone_number } }).then((data) => {
+      if (!data) {
+        res.json("PhoneNumber is wrong!");
+      } else {
+        jwt.sign(
+          {
+            id: data.id,
+            name: data.name + " " + data.lastname,
+            phoneNumber: data.phone_number,
+          },
+          Func.Secret(),
+          (err, token) => {
+            res.status(200).json({
+              msg: "Suссessfully",
+              token: token,
+              id: data.id,
+              name: data.name + " " + data.lastname,
+              phoneNumber: data.phone_number,
+            });
+          }
+        );
       }
-    );
+    });
   }
   const verification = await UserVerification.findOne({
     where: { phone_number: phone_number },
